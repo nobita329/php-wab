@@ -1,0 +1,84 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Automatic Release & Version Tag
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Calculate Semantic Version Tag
+        id: versioning
+        run: |
+          git fetch --tags || true
+          LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+          
+          if [ -z "$LATEST_TAG" ]; then
+            NEW_TAG="v1.0.0"
+          else
+            VERSION="${LATEST_TAG#v}"
+            IFS='.' read -r MAJOR MINOR PATCH <<< "$VERSION"
+            PATCH=$((PATCH + 1))
+            NEW_TAG="v${MAJOR}.${MINOR}.${PATCH}"
+          fi
+          
+          echo "tag=$NEW_TAG" >> "$GITHUB_OUTPUT"
+          echo "Determined release tag: $NEW_TAG"
+
+      - name: Create Git Tag
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag -a "${{ steps.versioning.outputs.tag }}" -m "Automated release ${{ steps.versioning.outputs.tag }}"
+          git push origin "${{ steps.versioning.outputs.tag }}"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Package Distribution Bundle
+        run: |
+          zip -r "cyberpulse-portfolio-${{ steps.versioning.outputs.tag }}.zip" . \
+            -x ".git/*" \
+            -x ".github/*" \
+            -x "storage/database.sqlite" \
+            -x "storage/cache/*" \
+            -x "storage/backups/*" \
+            -x "storage/installed.lock" \
+            -x ".env"
+
+      - name: Publish GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.versioning.outputs.tag }}
+          name: Release ${{ steps.versioning.outputs.tag }}
+          body: |
+            ## 🚀 CyberPulse 3D Portfolio & CMS — Release ${{ steps.versioning.outputs.tag }}
+
+            ### ✨ Key Features
+            - **Interactive Three.js 3D Hero Section** (Procedural geometry, orbiting stardust particles, dual point lights, mouse parallax & scroll reactions).
+            - **Accessible WebGL Fallback**: Interactive 2D Canvas constellation fallback.
+            - **Executive Admin Control Deck (`/admin/`)**: 21 functional modules with real database CRUD.
+            - **Dual Database Architecture**: Complete MySQL 8.0+ schema (`database/database.sql`) + SQLite support.
+            - **First-Run Web Setup Wizard**: Automated pre-flight checks, schema import, and admin credential generation.
+            - **Security**: PDO prepared statements, CSRF protection, brute-force rate-limiting, and upload execution protection.
+            - **cPanel & Apache Shared Hosting**: Ready-to-deploy `.htaccess` and configuration files.
+
+            ### 📦 Deployment
+            Extract the release archive into your web root (e.g. `public_html/`) and run `/install.php`.
+          files: |
+            cyberpulse-portfolio-${{ steps.versioning.outputs.tag }}.zip
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

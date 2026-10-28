@@ -1,0 +1,19 @@
+# Environment and secrets
+.env
+storage/database.sqlite
+storage/installed.lock
+storage/backups/*.sql
+storage/cache/*
+storage/logs/*
+
+# OS and Editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Keep storage folders
+!storage/cache/.gitkeep
+!storage/logs/.gitkeep
+!storage/backups/.gitkeep
+

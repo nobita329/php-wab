@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <defs>
+    <radialGradient id="rg" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#7928ca" stop-opacity="0.8"/>
+      <stop offset="70%" stop-color="#00f0ff" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#07080d" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="800" height="500" fill="#07080d"/>
+  <circle cx="400" cy="220" r="180" fill="url(#rg)"/>
+  <line x1="200" y1="220" x2="600" y2="220" stroke="#00f0ff" stroke-width="2"/>
+  <line x1="250" y1="180" x2="550" y2="180" stroke="#7928ca" stroke-width="2"/>
+  <line x1="300" y1="260" x2="500" y2="260" stroke="#00ff88" stroke-width="2"/>
+  <text x="400" y="380" font-family="'Outfit', sans-serif" font-size="24" font-weight="bold" fill="#ffffff" text-anchor="middle">KROMA AUDIO SYNTH</text>
+  <text x="400" y="415" font-family="'JetBrains Mono', monospace" font-size="14" fill="#00ff88" text-anchor="middle">FREQUENCY REACTIVE 3D PARTICLES</text>
+</svg>
+

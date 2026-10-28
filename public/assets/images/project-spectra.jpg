@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <rect width="800" height="500" fill="#0c0e18"/>
+  <rect x="250" y="140" width="300" height="180" rx="16" fill="rgba(255,255,255,0.03)" stroke="#00f0ff" stroke-width="2"/>
+  <circle cx="280" cy="170" r="6" fill="#ff0055"/>
+  <circle cx="300" cy="170" r="6" fill="#ffb703"/>
+  <circle cx="320" cy="170" r="6" fill="#00ff88"/>
+  <line x1="280" y1="210" x2="520" y2="210" stroke="#7928ca" stroke-width="3"/>
+  <line x1="280" y1="240" x2="440" y2="240" stroke="#00f0ff" stroke-width="2"/>
+  <text x="400" y="380" font-family="'Outfit', sans-serif" font-size="24" font-weight="bold" fill="#ffffff" text-anchor="middle">SPECTRA HEADLESS CMS</text>
+  <text x="400" y="415" font-family="'JetBrains Mono', monospace" font-size="14" fill="#00f0ff" text-anchor="middle">DYNAMIC SCHEMA & ASSET PIPELINE</text>
+</svg>
+

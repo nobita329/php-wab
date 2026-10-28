@@ -1,0 +1,39 @@
+# ========================================================
+# Apache Root .htaccess Configuration
+# Compatible with cPanel, LiteSpeed, and Standard Apache LAMP
+# ========================================================
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Prevent direct access to sensitive directories and configuration files
+    RewriteRule ^(\.env|config/|database/|storage/|app/|\.git) - [F,L,NC]
+
+    # If request is already pointing to public or admin, let it pass
+    RewriteCond %{REQUEST_URI} ^/public/ [OR]
+    RewriteCond %{REQUEST_URI} ^/admin/
+    RewriteRule ^ - [L]
+
+    # If root URL requested, rewrite to /public/index.php
+    RewriteRule ^$ public/index.php [L]
+
+    # Rewrite all other requests to public/
+    RewriteCond %{REQUEST_URI} !^/public/
+    RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>
+
+# Block access to hidden files and sensitive dotfiles
+<FilesMatch "^\.(env|git|htaccess|htpasswd)">
+    Order Deny,Allow
+    Deny from all
+</FilesMatch>
+
+# Block access to database backups and SQL files
+<FilesMatch "\.(sql|sqlite|sqlite3|log|sh)$">
+    Order Deny,Allow
+    Deny from all
+</FilesMatch>
+
+# Disable Directory Browsing
+Options -Indexes
+
